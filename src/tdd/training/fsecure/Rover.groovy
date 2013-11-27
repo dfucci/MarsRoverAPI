@@ -15,27 +15,60 @@ class Rover {
 
 	public executeCommand(command){
 		command.each{
-			analizeCommand(it)
+			analizeCommand(it) 
 		}
 	}
 
 	private analizeCommand(it) {
-		move(it, this.orientation)
+		move(it)
 		orientRover(this.orientation, it)
 	}
 
-	private move(moveCommand, currentOrientation) {
-		if(moveCommand=="f" && currentOrientation=="N") changePosition(0, 1)
-		else if(moveCommand=="f" && currentOrientation == "E") changePosition(1, 0)
-		else if(moveCommand=="f" && currentOrientation == "W") changePosition(-1, 0)
-		else if(moveCommand=="f" && currentOrientation == "S") changePosition(0,-1)
-		else if(moveCommand=="b" && currentOrientation=="N") changePosition(0, -1)
-		else if(moveCommand=="b" && currentOrientation=="E") changePosition(-1, 0)
-		else if(moveCommand=="b" && currentOrientation == "W") changePosition(1, 0)
-		else if(moveCommand=="b" && currentOrientation== "S") changePosition(0, 1)
+	private move(moveCommand) {
+		if(isMovingUp(moveCommand)) moveOnAxis("y", 1)
+		else if(isMovingDown(moveCommand)) moveOnAxis("y", -1)
+		else if(isMovingRight(moveCommand)) moveOnAxis("x", 1)
+		else if(isMovingLeft(moveCommand)) moveOnAxis("x", -1)
 	}
 
 	
+	private boolean isMovingUp(String moveCommand){
+		return moveCommand=="f" && this.orientation=="N" || moveCommand=="b" && this.orientation == "S"
+	}
+	
+	
+	private boolean isMovingDown(String moveCommand){
+		return moveCommand=="f" && this.orientation == "S" || moveCommand=="b" && this.orientation =="N" 
+	}
+	
+	private boolean isMovingLeft(String moveCommand){
+		return moveCommand=="f" && this.orientation == "W" || moveCommand=="b" && this.orientation =="E"
+	}
+	
+	private boolean isMovingRight(String moveCommand){
+		return moveCommand=="b" && this.orientation == "W" || moveCommand=="f" && this.orientation == "E"
+	}
+	private moveOnAxis(String axis, int direction){
+		if(axis=="y" && direction == 1) moveOnPositiveYaxis()
+		else if(axis == "y" && direction == -1) moveOnNegativeYaxis()
+		else if(axis == "x" && direction ==1) moveOnPositiveXaxis()
+		else if(axis == "x" && direction == -1) moveOnNegativeXaxis()
+	}
+	
+	private moveOnPositiveXaxis(){
+		changePosition(1, 0)
+	}
+	
+	private moveOnNegativeXaxis(){
+		changePosition(-1, 0)
+	}
+	
+	private moveOnPositiveYaxis(){
+		changePosition(0, 1)
+	}
+	private moveOnNegativeYaxis(){
+		changePosition(0, -1)
+	}
 	
 	private changePosition(x_modifier, y_modifier) {
 		Cell arrivingCell = new Cell(x: this.position.x + x_modifier, y: this.position.y + y_modifier)
