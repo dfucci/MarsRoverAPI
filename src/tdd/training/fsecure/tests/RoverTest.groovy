@@ -305,4 +305,31 @@ class RoverTest {
 		
 	}
 	
+	@Test
+	void whenTheRoverMovesOverTheTopEdgeItShouldBeAtTheBottomOfThePlanet(){
+		1.upto(101) {rover.executeCommand("f")}
+		assertThat "Rover is at the edge of Planet", rover.position.y, is(0)
+	}
+		
+	@Test
+	void whenTheRoverMovesOverTheRightEdgeItShouldSpawnAtTheLeftEdgeOfThePlanet(){
+		rover.executeCommand("r")
+		1.upto(100) {rover.executeCommand("f")}
+		assertThat rover.position.x, is(100)
+		rover.executeCommand("f")
+		assertThat "Rover is at the right edge of the Planet", rover.position.x, is(0)
+	}
+	
+	@Test
+	void whenTheRoverIsAtTheBottomOfThePlanetAndMovesBackwardsItSpawnAtTheTop(){
+		rover.executeCommand("b")
+		assertThat rover.position.y, is(100)
+	}
+	
+	
+	@Test
+	void whenTheRoverIsAtTheLeftEdgeOfThePlanetAndMoveBackwardsItSpawnAtTheRightEdge(){
+		rover.executeCommand("rb")
+		assertThat rover.position.x, is(100)
+	}
 }

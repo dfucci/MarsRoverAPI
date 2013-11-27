@@ -76,9 +76,37 @@ class Rover {
 		else {
 			this.position.y = this.position.y + y_modifier
 			this.position.x = this.position.x + x_modifier
+			
 		}
+		spawnOutOfFieldRover()
 	}
 
+	private spawnOutOfFieldRover() {
+		if(this.position.y > this.planet.side) spawn("S")
+		if(this.position.x > this.planet.side) spawn("W")
+		if(this.position.y < 0) this.position.y = spawn("N")
+		if(this.position.x < 0) this.position.x = spawn("E")
+	}
+
+	
+	
+	private spawn(String direction){
+		switch(direction){
+			case "N":
+				this.position.y = this.planet.side
+				break
+			case "S":
+				this.position.y = 0
+				break
+			case "W":
+				this.position.x = 0
+				break
+			case "E":
+				this.position.x = this.planet.side
+				break
+		}
+	}
+	
 	private boolean arrivingCellIsObstacle(Cell arrivingCell) {
 		return this.planet.obstacles.contains(arrivingCell)
 	}
